@@ -11,7 +11,7 @@ import java.util.List;
  * @version 2.0
  */
 public class MapPanel extends JPanel {
-
+  double bestDistance = Double.POSITIVE_INFINITY;
   private List<City> cities = List.of();
   private List<Integer> tour = List.of();
   private double rotation = -Math.PI / 2 + Math.PI;  // = +Math.PI/2

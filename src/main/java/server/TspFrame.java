@@ -1,5 +1,7 @@
 package server;
 
+import client.NearestNeighborSolver;
+
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
@@ -17,6 +19,7 @@ public class TspFrame extends JFrame {
   private final MapPanel mapPanel = new MapPanel();
   private final JTextArea log = new JTextArea(8, 60);
   private List<City> cities = List.of();
+  private String urlStr = "";
   private List<Integer> tour = List.of();
 
   public TspFrame() {
@@ -53,6 +56,7 @@ public class TspFrame extends JFrame {
       mapPanel.setCities(cities);
       log.append("\nLoaded: " + urlStr + "\n");
       log.append("Cities: " + cities.size() + "\n");
+      this.urlStr = urlStr;
     } catch (Exception ex) {
       log.append("\nERROR: " + ex.getMessage() + "\n");
     }
@@ -63,11 +67,9 @@ public class TspFrame extends JFrame {
       log.append("\nLoad a file first.\n");
       return;
     }
-    tour = NearestNeighborSolver.solve(cities, 0);
-    double len = NearestNeighborSolver.length(cities, tour);
+    new Thread(new Outsourcer(urlStr,cities,mapPanel)).start();
     mapPanel.setTour(tour);
-    log.append("\nNearest-neighbor tour computed.\n");
-    log.append("Tour length (Euclidean): " + String.format("%.3f", len) + "\n");
+
   }
 
   private void onClear() {

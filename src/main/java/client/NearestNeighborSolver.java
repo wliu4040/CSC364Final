@@ -1,4 +1,6 @@
-package server;
+package client;
+
+import server.City;
 
 import java.util.ArrayList;
 import java.util.List;

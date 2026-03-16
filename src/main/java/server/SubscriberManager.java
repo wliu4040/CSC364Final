@@ -2,10 +2,12 @@ package server;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 
+import javax.swing.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.*;
+import java.util.Timer;
 import java.util.stream.Collectors;
 
 public class SubscriberManager implements PropertyChangeListener {
@@ -14,10 +16,11 @@ public class SubscriberManager implements PropertyChangeListener {
     private final WorkerTracker workerTracker;
     private final String workerFinderTopic;
     double bestDistance = Double.MAX_VALUE;
+    double prevDistance = bestDistance;
     List<Integer> bestTour = new ArrayList<>();
     private final Timer timer;
 
-    public SubscriberManager(String broker, String topicBase, WorkerTracker workerTracker, MapPanel mapPanel) {
+    public SubscriberManager(String broker, String topicBase, WorkerTracker workerTracker, MapPanel mapPanel, JTextArea log) {
         this.topicBase = topicBase;
         workerFinderTopic = topicBase + "/request";
         subscriber = new Subscriber(broker);
@@ -34,6 +37,10 @@ public class SubscriberManager implements PropertyChangeListener {
             @Override
             public void run() {
                 mapPanel.setTour(bestTour);
+                if(bestDistance != Double.MAX_VALUE && prevDistance != bestDistance) {
+                    log.append("Tour length (Euclidean): " + String.format("%.3f", bestDistance) + "\n");
+                    prevDistance = bestDistance;
+                }
             }
         },0,1000);
 

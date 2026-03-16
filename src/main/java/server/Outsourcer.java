@@ -2,7 +2,9 @@ package server;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 
+import javax.swing.*;
 import java.util.*;
+import java.util.Timer;
 
 public class Outsourcer implements Runnable {
     private final Queue<Job> jobsQueue;
@@ -11,11 +13,11 @@ public class Outsourcer implements Runnable {
     private SubscriberManager subscriberManager ;
     private PublisherManager publisherManager;
     private WorkerTracker workerTracker;
-    public Outsourcer(String fileUrl, List<City> cities, MapPanel mapPanel) {
+    public Outsourcer(String fileUrl, List<City> cities, MapPanel mapPanel, JTextArea log) {
         this.jobsQueue = initializeJobsQueue(fileUrl,cities);
         WorkerTracker workerTracker = new WorkerTracker();
         this.workerTracker = workerTracker;
-        subscriberManager = new SubscriberManager(broker, topicBase,workerTracker,mapPanel);
+        subscriberManager = new SubscriberManager(broker, topicBase,workerTracker,mapPanel,log);
         publisherManager = new PublisherManager(broker,topicBase,workerTracker);
     }
 

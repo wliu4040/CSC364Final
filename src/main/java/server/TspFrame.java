@@ -67,8 +67,7 @@ public class TspFrame extends JFrame {
       log.append("\nLoad a file first.\n");
       return;
     }
-    new Thread(new Outsourcer(urlStr,cities,mapPanel)).start();
-    mapPanel.setTour(tour);
+    new Thread(new Outsourcer(urlStr,cities,mapPanel,log)).start();
 
   }
 

@@ -8,18 +8,22 @@ public class Main {
     private static final String answersTopic = "/csc364/wliu40/assign/";
 
     public static void main(String[] args) {
-        Publisher publisher = new Publisher(broker);
-        String clientId = publisher.clientId;
-        Subscriber subscriber = new Subscriber(broker);
-        subscriber.addPropertyChangeListener(publisher);
-        try {
-            subscriber.addTopic(answersTopic + clientId);
-        } catch (MqttException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
+        int numThreads = 10;
+        for(int i = 0; i < numThreads; i++) {
+            Publisher publisher = new Publisher(broker);
+            String clientId = publisher.clientId;
+            Subscriber subscriber = new Subscriber(broker);
+            subscriber.addPropertyChangeListener(publisher);
+            try {
+                subscriber.addTopic(answersTopic + clientId);
+            } catch (MqttException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+            publisher.publish(requestTopic,clientId);
+            publisher.answerTopic = answersTopic + clientId;
+
         }
-        publisher.publish(requestTopic,clientId);
-        publisher.answerTopic = answersTopic + clientId;
 
     }
 }

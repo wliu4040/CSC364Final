@@ -8,8 +8,7 @@ public class Main {
     private static final String answersTopic = "/csc364/wliu40/assign/";
 
     public static void main(String[] args) {
-        int numThreads = 10;
-        for(int i = 0; i < numThreads; i++) {
+        for(int i = 0; i < 3; i++) {
             Publisher publisher = new Publisher(broker);
             String clientId = publisher.clientId;
             Subscriber subscriber = new Subscriber(broker);
@@ -22,8 +21,6 @@ public class Main {
             }
             publisher.publish(requestTopic,clientId);
             publisher.answerTopic = answersTopic + clientId;
-
         }
-
+        }
     }
-}

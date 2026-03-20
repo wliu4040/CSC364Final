@@ -27,7 +27,7 @@ public class Outsourcer implements Runnable {
             try {
                 Job job = jobsQueue.poll();
                 if(job == null) {
-                    subscriberManager.shutdown();
+//                    subscriberManager.shutdown();
                     break;
                 }
                 String clientID = workerTracker.getNextAvailableWorker();
@@ -58,7 +58,7 @@ public class Outsourcer implements Runnable {
                     }
                 }
             }
-        }, 5000);
+        }, 100000);
     }
 
     public Queue<Job> initializeJobsQueue(String fileUrl, List<City> cities) {
